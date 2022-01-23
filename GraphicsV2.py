@@ -13,8 +13,9 @@ class App(QWidget):
         self.title = "Online Tic Tac Toe"
         self.button_list = []
         self.endgame_label = QLabel("", self)
-        self.setup_ui()
+        self.layout = QtWidgets.QHBoxLayout()
 
+        self.setup_ui()
 
     def setup_ui(self):
         self.setObjectName("App")
@@ -31,9 +32,9 @@ class App(QWidget):
         b9 = QPushButton('9', self)
 
         # exit button
-        self.exit_btn = QtWidgets.QPushButton(self, clicked=lambda: self.exit_app())
-        self.exit_btn.setText("Exit :(")
-        self.exit_btn.setGeometry(QtCore.QRect(230, 590, 75, 23))
+        exit_btn = QtWidgets.QPushButton(self, clicked=lambda: self.exit_app())
+        exit_btn.setText("Exit :(")
+        exit_btn.setGeometry(QtCore.QRect(230, 590, 75, 23))
 
         self.button_list = [b1, b2, b3, b4, b5, b6, b7, b8, b9]
         font = QtGui.QFont()
@@ -59,16 +60,19 @@ class App(QWidget):
 
     def on_click(self):
         print('PyQt5 button click - ' + self.sender().text())
-        if can_change():
-            self.sender().setText('X')  # player sign
-            # disable all
-            for btn in self.button_list:
-                btn.setDisabled(True)
+        self.sender().setText('X')  # player sign
+        # disable all
+        for current_button in self.button_list:
+            current_button.setDisabled(True)
+        #self.disable_all_buttons()
+
+    def disable_all_buttons(self):
+        for btn in self.button_list:
+            btn.setDisabled(True)
 
     def on_turn(self):
         for btn in self.button_list:
             btn.setDisabled(False)
-
 
     def exit_app(self):
         sys.exit()
@@ -84,13 +88,6 @@ class App(QWidget):
             self.endgame_label.setText("You have lost the game!")
         elif which == "t":
             self.endgame_label.setText("It's a tie!!!")
-
-    def reset_window(self):
-        self.hide()
-        self.show()
-
-def can_change():
-    return True
 
 
 if __name__ == "__main__":
@@ -146,4 +143,4 @@ if __name__ == "__main__":
             client_socket.send(numberToSwitch.encode())
 """
 
-    #sys.exit(app.exec_())
+# sys.exit(app.exec_())
